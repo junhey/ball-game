@@ -2,6 +2,6 @@
 
 Ball game based on JavaScript
 
-> Online preview:  [http://ball-game.github.io/ball-game/index.html](http://ball-game.github.io/ball-game/index.html)
+> Online preview:  [http://junhey.github.io/ball-game/index.html](http://junhey.github.io/ball-game/index.html)
 
 

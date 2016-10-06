@@ -44,10 +44,102 @@
     </div>
     <div class="box-menu">
       <button id="btnStart">Start/Add</button>
-      <button id="btn-Restart">ReStart</button>
+      <button id="btnRestart">ReStart</button>
       <button id="btnStop">Stop/Pause</button>
     </div>
     <script type="text/javascript">
+      var ballObj=document.getElementById('ball');
+      var ballMaxX=360,ballMinX=0,ballMaxY=360,ballMinY=0;
+      var ballCollision=340;
+      var ballX=180,ballY=180;
+      var ballFlagX=true,ballFlagY=true;
+      var ballRunHandler=null;
+      window.onload=function(){
+        var sliderX=150;
+        var sliderMaxX=300;
+        var sliderMinX=0;
+        var sliderObj=document.getElementById('slider');
+        document.onkeydown=sliderMove;
+        function sliderMove(e) {
+          var currKey=0,e=e||event;
+              currKey=e.keyCode||e.which||e.charCode;          
+          if(currKey==37){
+            sliderX-=50;
+            if(sliderX<=sliderMinX){
+              sliderX=sliderMinX;
+            }
+          }
+          if(currKey==39){
+            sliderX+=50;
+            if(sliderX>=sliderMaxX){
+              sliderX=sliderMaxX;
+            }
+          }
+          sliderObj.style.left=sliderX+"px";
+          console.log("按键码: " + currKey + " 字符: " +String.fromCharCode(currKey));
+        }
+      
+
+        function ballRun(){
+          if(ballFlagX){
+            ballX+=2;
+            if(ballX>=ballMaxX){
+              ballX=ballMaxX
+              ballFlagX=!ballFlagX;
+            }          
+          }else{
+            ballX-=2;
+            if( ballX<=ballMinX){
+                ballX=ballMinX
+                ballFlagX=!ballFlagX;
+            }
+          }        
+          if(ballFlagY){
+            ballY+=1;
+            if( ballY > ballCollision &&
+                ballX > sliderX &&
+                ballX < (sliderX+100)){
+                ballY=ballCollision
+                ballFlagY=!ballFlagY;          
+            }
+            if( ballY > ballMaxY){
+                clearTimeout(ballRunHandler);
+                alert("Game Over");
+                return false;
+            }          
+          }else{
+            ballY-=1;
+            if(ballY<=ballMinY){
+              ballY=ballMinY
+              ballFlagY=!ballFlagY;
+            }
+          }        
+          ballObj.style.left=ballX+"px";
+          ballObj.style.top=ballY+"px";
+          ballRunHandler=setTimeout(ballRun,10);
+          console.log('X:'+ballX+' Y:'+ballX);
+        }
+
+        function ballStop(){
+          clearTimeout(ballRunHandler);
+          ballRunHandler=null;
+          return 0;
+        }
+
+
+        document.getElementById('btnStart').onclick=function(){
+          ballRun();
+        }
+        document.getElementById('btnStop').onclick=function(){
+          ballStop();
+        }
+        document.getElementById('btnRestart').onclick=function(){
+          ballX=180,ballY=180;
+          ballFlagX=true,ballFlagY=true;
+          ballRunHandler=null;
+          ballRun();
+        }
+      }
 
     </script>  
   </body>
